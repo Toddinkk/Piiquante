@@ -68,21 +68,29 @@ exports.deleteSauce = (req, res, next) => {
 
 // Like/Dislike
 exports.likeSauce = (req, res, next) => {
+    console.log(req.params.id);
     sauce.findOne({ _id: req.params.id })
         .then(newSauce => {
+            console.log(newSauce.name);
             let i = 0;
             let tabLikes = []; let tabDislikes = [];
             let already_liked = 0; let already_disliked = 0;
             let type_like = req.body.like;
+            console.log(req.body.like);
             let user_id = req.body.userId;
+            console.log(req.body.userId);
 
+            console.log(newSauce.usersLiked);
             // Vérifier si l'utilisateur a déjà like/dislike
             if(newSauce.usersLiked) {
+                console.log('bonjour');
                 tabLikes = JSON.parse(newSauce.usersLiked);
                 while(i < tabLikes.length) {
+                    console.log(tabLikes[i]);
                     if(tabLikes[i] == user_id) { 
                         if(type_like == 0 || type_like == -1) { // Supprimer userid des 'userLikes' annule/dislike
                             tabLikes.splice(i, 1); 
+                            console.log(newSauce.likes);
                             newSauce.likes --;
                         }
                         already_liked = 1;
@@ -125,4 +133,6 @@ exports.likeSauce = (req, res, next) => {
 
         })
         .catch(error => res.status(500).json({ error }));
+        
+
 }; 
