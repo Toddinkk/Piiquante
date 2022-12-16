@@ -67,6 +67,75 @@ exports.deleteSauce = (req, res, next) => {
 };
 
 // Like/Dislike
+/*exports.likeSauce = (req, res, next) => {
+    console.log(req.params.id);
+    sauce.findOne({ _id: req.params.id })
+        .then(newSauce => {
+            console.log(newSauce.name);
+            let i = 0;
+            let tabLikes = []; let tabDislikes = [];
+            let already_liked = 0; let already_disliked = 0;
+            let type_like = req.body.like;
+            console.log(req.body.like);
+            let user_id = req.body.userId;
+            console.log(req.body.userId);
+
+            console.log(newSauce.usersLiked);
+            // Vérifier si l'utilisateur a déjà like/dislike
+            if(newSauce.usersLiked) {
+                console.log('bonjour');
+                tabLikes = JSON.parse(newSauce.usersLiked);
+                while(i < tabLikes.length) {
+                    console.log(tabLikes[i]);
+                    if(tabLikes[i] == user_id) { 
+                        if(type_like == 0 || type_like == -1) { // Supprimer userid des 'userLikes' annule/dislike
+                            tabLikes.splice(i, 1); 
+                            console.log(newSauce.likes);
+                            newSauce.likes --;
+                        }
+                        already_liked = 1;
+                    }
+                    i ++;
+                }
+            }
+            if(newSauce.usersDisliked) {
+                tabDislikes = JSON.parse(newSauce.usersDisliked); i = 0;
+                while(i < tabDislikes.length) {
+                    if(tabDislikes[i] == user_id) { 
+                        if(type_like == 0 || type_like == 1) { // Supprimer userid des 'userDislikes' si annule/like
+                            tabDislikes.splice(i, 1); 
+                            newSauce.dislikes --;
+                        }
+                        already_disliked = 1;
+                    }
+                    i ++;
+                }
+            }
+
+            // Ajout like/dislike
+            if(type_like == 1 && already_liked == 0) {
+                tabLikes.push(user_id);
+                newSauce.likes ++; 
+            }
+            if(type_like == -1 && already_disliked == 0) {
+                tabDislikes.push(user_id);
+                newSauce.dislikes ++; 
+            }
+
+            sauce.updateOne({ _id: req.params.id }, { 
+                    likes: newSauce.likes, 
+                    dislikes: newSauce.dislikes, 
+                    usersLiked: JSON.stringify(tabLikes), 
+                    usersDisliked: JSON.stringify(tabDislikes)
+                })
+                .then(() => res.status(200).json({ message: 'Mis à jour ! '}))
+                .catch(error => res.status(400).json({ error }));
+
+        })
+        .catch(error => res.status(500).json({ error }));
+        
+
+};*/
 exports.likeSauce = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
       .then(sauce => {
